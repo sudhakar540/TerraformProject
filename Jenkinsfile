@@ -1,10 +1,7 @@
 #!groovy
 
 // Build Parameters
-properties([ parameters([
-  string( name: 'AWS_ACCESS_KEY_ID', defaultValue: ''),
-  string( name: 'AWS_SECRET_ACCESS_KEY', defaultValue: '')
-]), pipelineTriggers([]) ])
+
 
 // Environment Variables
 env.AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
