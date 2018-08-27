@@ -6,14 +6,14 @@ pipeline {
         terraform 'Terraform 0.11.8'
   }
   stages {
-    stage('Clone repository') {
+    stage('Checkout') {
         /* Let's make sure we have the repository cloned to our workspace... */
       steps {
         checkout scm
       }
     }
     
-    stage ('Terraform Plan') {
+    stage ('Terraform Plan') {
         sh 'terraform plan -no-color -out=create.tfplan'
       }
     
