@@ -2,14 +2,13 @@ node("master") {
 
     stage("Prep") {
         deleteDir() // Clean up the workspace
-        checkout scm
-        withCredentials([file(credentialsId: 'tfvars', variable: 'tfvars')]) {
-            sh "cp $tfvars terraform.tfvars"
-        }
-        sh "terraform init --get=true"
+        checkout scm       
+        sh "terraform init
     }
-
     stage("Plan") {
-        sh "terraform plan -out=plan.out -no-color"
+        sh "terraform plan
+    }
+     stage("Apply") {
+        sh "terraform apply
     }
 }
