@@ -1,6 +1,6 @@
 stack_name         = "lowercase string"
-access_key         = "AKIAJCCVT7QB3SCFNCCQ"
-secret_key         = "JGIGvzbTrd6iwNHRJHBfhxTWwieydzhEIWA/S0UW"
+access_key         = "access key"
+secret_key         = "secret key"
 key_name           = "YOUR KEY PAIR NAME TO LOG INTO AWS RESOURCES, make sure you have key pair first before using the code"
 server_port        = 80
 region             = "eu-west-2"
