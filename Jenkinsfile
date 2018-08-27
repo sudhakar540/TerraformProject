@@ -3,6 +3,7 @@ pipeline {
   tools { 
         maven 'Maven-3.5.4'
         jdk 'JDK-8'
+        terraform 'Terraform 0.11.8'
   }
   stages {
     stage('Clone repository') {
