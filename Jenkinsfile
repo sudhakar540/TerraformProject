@@ -3,12 +3,12 @@ node("master") {
     stage("Prep") {
         deleteDir() // Clean up the workspace
         checkout scm       
-        sh "terraform init"
+        sh "terraform init --get=true"
     }
     stage("Plan") {
-        sh "terraform plan"
+        sh "terraform plan -out=plan.out -no-color"
     }
      stage("Apply") {
-        sh "terraform apply"
+        sh "terraform apply -no-color plan.out"
     }
 }
