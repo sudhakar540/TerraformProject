@@ -1,3 +1,14 @@
+#!groovy
+
+properties([ parameters([
+  string( name: 'AWS_ACCESS_KEY', defaultValue: ''),
+  string( name: 'AWS_SECRET_KEY', defaultValue: '')
+]), pipelineTriggers([]) ])
+
+// Environment Variables
+env.AWS_ACCESS_KEY = AWS_ACCESS_KEY
+env.AWS_SECRET_KEY = AWS_SECRET_KEY
+
 node("master") {
 
     stage("Prep") {
