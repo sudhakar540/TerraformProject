@@ -1,13 +1,6 @@
 variable "stack_name"{
 	description = "Name of the current Stack"
 }
-
-variable "access_key" {
-	description = "The AWS access key."
-}
-variable "secret_key" {
-	description = "The AWS secret key."
-}
 variable "key_name" {
 	description = "The AWS keypair name to access your EC2 Instances."
 }
