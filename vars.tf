@@ -3,9 +3,8 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
-# ubuntu-trusty-14.04 (x64)
 variable "aws_amis" {
-  default = {
+  default = {
    # "us-east-1" = "ami-5f709f34"
     "us-west-2" = "ami-51537029"
   }
