@@ -21,9 +21,9 @@ node("master") {
         if (fileExists("status")) {
             sh "rm status"
         }
-       
+       sh "terraform init --get=true"
         sh "terraform destroy"
-        sh "terraform init --get=true"
+        
     }
     stage ('Terraform Plan') {
         sh 'terraform plan -no-color -out=create.tfplan'
