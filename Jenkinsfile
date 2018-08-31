@@ -22,42 +22,7 @@ node("master") {
             sh "rm status"
         }
        
-        sh "terraform get"
-        sh "set +e; terraform plan -destroy -out=plan.out -detailed-exitcode; echo \$? > status"
-        def exitCode = readFile('status').trim()
-        def destroy = false
-        echo "Terraform Plan Exit Code: ${exitCode}"
-        if (exitCode == "0") {
-            currentBuild.result = 'SUCCESS'
-        }
-        if (exitCode == "1") {             
-              currentBuild.result = 'FAILURE'
-        }
-        if (exitCode == "2") {
-            stash name: "plan", includes: "plan.out"               
-            try {
-                input message: 'Destroy Plan?', ok: 'Destroy'
-                destroy = true
-            } catch (err) {                   
-                destroy = false
-                currentBuild.result = 'UNSTABLE'
-            }
-         }
-        if (destroy) {
-            stage name: 'Destroy', concurrency: 1
-            unstash 'plan'
-            if (fileExists("status.destroy")) {
-                sh "rm status.destroy"
-            }
-            sh "set +e; terraform destroy -force; echo \$? > status.destroy"
-            def destroyExitCode = readFile('status.destroy').trim()
-            if (destroyExitCode == "0") {
-                // slackSend channel: '#ci', color: 'good', message: "Changes Applied ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"    
-            } else {
-                // slackSend channel: '#ci', color: 'danger', message: "Destroy Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"
-                currentBuild.result = 'FAILURE'
-            }
-        }
+        sh "terraform destroy"
         sh "terraform init --get=true"
     }
     stage ('Terraform Plan') {
