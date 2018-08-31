@@ -22,7 +22,7 @@ node("NewNode") {
             sh "rm status"
         }
        sh "terraform init --get=true"
-        sh "terraform destroy"
+        sh "terraform destroy -auto-approve"
         
     }
     stage ('Terraform Plan') {
