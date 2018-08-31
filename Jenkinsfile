@@ -13,7 +13,51 @@ node("master") {
 
     stage("Prep") {
         deleteDir() // Clean up the workspace
-        checkout scm    
+        checkout scm 
+        sh "terraform --version"
+        if (fileExists(".terraform/terraform.tfstate")) {
+              sh "rm -rf .terraform/terraform.tfstate"
+        }
+        if (fileExists("status")) {
+            sh "rm status"
+        }
+        sh "./jenkins-init"
+        sh "terraform get"
+        sh "set +e; terraform plan -destroy -out=plan.out -var-file=environments/${env.PROJECT}/${env.PROJECT}.tfvars -detailed-exitcode; echo \$? > status"
+        def exitCode = readFile('status').trim()
+        def destroy = false
+        echo "Terraform Plan Exit Code: ${exitCode}"
+        if (exitCode == "0") {
+            currentBuild.result = 'SUCCESS'
+        }
+        if (exitCode == "1") {             
+              currentBuild.result = 'FAILURE'
+        }
+        if (exitCode == "2") {
+            stash name: "plan", includes: "plan.out"               
+            try {
+                input message: 'Destroy Plan?', ok: 'Destroy'
+                destroy = true
+            } catch (err) {                   
+                destroy = false
+                currentBuild.result = 'UNSTABLE'
+            }
+         }
+        if (destroy) {
+            stage name: 'Destroy', concurrency: 1
+            unstash 'plan'
+            if (fileExists("status.destroy")) {
+                sh "rm status.destroy"
+            }
+            sh "set +e; terraform destroy -force -var-file=environments/${env.PROJECT}/${env.PROJECT}.tfvars; echo \$? > status.destroy"
+            def destroyExitCode = readFile('status.destroy').trim()
+            if (destroyExitCode == "0") {
+                // slackSend channel: '#ci', color: 'good', message: "Changes Applied ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"    
+            } else {
+                // slackSend channel: '#ci', color: 'danger', message: "Destroy Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"
+                currentBuild.result = 'FAILURE'
+            }
+        }
         sh "terraform init --get=true"
     }
     stage ('Terraform Plan') {
