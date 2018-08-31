@@ -45,7 +45,6 @@ resource "aws_instance" "web" {
   tags {
     Name = "eip-example"
   }
-  key_name = "${var.key_name}"
   security_groups = ["${aws_security_group.default.name}"]  
   user_data = "${file("userdata.sh")}"
 
