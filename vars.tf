@@ -13,3 +13,9 @@ variable "aws_amis" {
 variable "key_name" {
   description = "Name of the SSH keypair to use in AWS."
 }
+variable "access_key" {
+    default = "foo"
+}
+variable "secret_key" {
+    default = "foo"
+}
