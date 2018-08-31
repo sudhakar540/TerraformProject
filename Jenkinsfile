@@ -22,7 +22,7 @@ node("NewNode") {
             sh "rm status"
         }
        sh "terraform init --get=true"
-        sh "terraform destroy --target=web.eip-example -auto-approve"
+        sh "terraform destroy --target=web.eip-example[0] -auto-approve"
         
     }
     stage ('Terraform Plan') {
