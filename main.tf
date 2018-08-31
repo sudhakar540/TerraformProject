@@ -1,6 +1,4 @@
-provider "aws" {
-  access_key = "AKIAIVSTI22FRPGNEE6A"
-  secret_key = "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"
+provider "aws" { 
   region = "${var.aws_region}"
 }
 
