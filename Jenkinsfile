@@ -21,7 +21,7 @@ node("master") {
         if (fileExists("status")) {
             sh "rm status"
         }
-        sh "./jenkins-init"
+       
         sh "terraform get"
         sh "set +e; terraform plan -destroy -out=plan.out -var-file=environments/${env.PROJECT}/${env.PROJECT}.tfvars -detailed-exitcode; echo \$? > status"
         def exitCode = readFile('status').trim()
