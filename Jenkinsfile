@@ -9,7 +9,7 @@ properties([ parameters([
 env.AWS_ACCESS_KEY = AWS_ACCESS_KEY
 env.AWS_SECRET_KEY = AWS_SECRET_KEY
 
-node("master") {
+node("NewNode") {
 
     stage("Prep") {
         deleteDir() // Clean up the workspace
