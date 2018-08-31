@@ -3,7 +3,7 @@ provider "aws" {
 }
 resource "aws_key_pair" "deployer" {
   key_name   = "deployer-key"
-  public_key = "${file("terraform_ec2_key.pub")}"
+  public_key = "${file("/home/satheesh/terraform_ec2_key.pub")}"
 }
 resource "aws_eip" "default" {
   instance = "${aws_instance.web.id}"
@@ -53,7 +53,7 @@ resource "aws_instance" "web" {
   #
   # https://console.aws.amazon.com/ec2/v2/home?region=us-west-2#KeyPairs:
   #
-  key_name = "${var.key_name}"
+  key_name = "${aws_key_pair.deployer.key_name}"
 
   # Our Security group to allow HTTP and SSH access
   security_groups = ["${aws_security_group.default.name}"]
