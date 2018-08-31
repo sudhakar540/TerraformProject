@@ -1,7 +1,9 @@
-provider "aws" { 
-   access_key = "AKIAILEHQ2HHXIEA5TSQ"
-    secret_key = "${file("/home/satheesh/terraform_ec2_key.pub")}"
+provider "aws" {    
   region = "${var.aws_region}"
+}
+resource "aws_key_pair" "terraform_ec2_key" {
+  key_name = "terraform_ec2_key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJbNaKbbeZSjdHwfQRkKoL7ZToYyKxF7v7TQx+3KBK3gBGxw7NWzwDs/nWVOWIoKwwhalCjPWiSSy6oGSuPQNXXjLcm5mk9z7fclvaKTji1HmpmJ4iXqgXJ25I1CLf29KtPSA5/+MspYL5OgqRbv3gx9fP/DFCuQRnJ2HOW7P75dE5HXqENG3q52m9NdPXx5M1KnnMwg8XN/KAmtDRLnhtDLZwSheqyx3qnQaQemuvvxfKw+EAViDWoy9j8uDdkYG9eFCMFvNGdwsncXsrVo0m80S+Tmoq9Tzi1NX2oJ3TrLsSMaeje5iVNShraIgGS4lcgVYPmaDw9omeRsy5G7Zb satheesh@satheesh-VirtualBox"
 }
 resource "aws_eip" "default" {
   instance = "${aws_instance.web.id}"
@@ -51,7 +53,7 @@ resource "aws_instance" "web" {
   #
   # https://console.aws.amazon.com/ec2/v2/home?region=us-west-2#KeyPairs:
   #
-   key_name = "${var.key_name}"
+  key_name = "${aws_key_pair.terraform_ec2_key.key_name}"
 
   # Our Security group to allow HTTP and SSH access
   security_groups = ["${aws_security_group.default.name}"]
