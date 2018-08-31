@@ -22,7 +22,7 @@ node("NewNode") {
             sh "rm status"
         }
        sh "terraform init --get=true"
-        sh "terraform destroy --target=aws_instance.agent[1] -auto-approve"
+        sh "terraform destroy --target=aws_instance.web -auto-approve"
         
     }
     stage ('Terraform Plan') {
