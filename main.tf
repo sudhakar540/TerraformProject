@@ -1,7 +1,10 @@
 provider "aws" { 
   region = "${var.aws_region}"
 }
-
+resource "aws_key_pair" "deployer" {
+  key_name   = "deployer-key"
+  public_key = "${file("/home/satheesh/terraform_ec2_key.pub")}"
+}
 resource "aws_eip" "default" {
   instance = "${aws_instance.web.id}"
   vpc      = true
@@ -45,6 +48,7 @@ resource "aws_instance" "web" {
   tags {
     Name = "eip-example"
   }
+  key_name = "${var.key_name}"
   security_groups = ["${aws_security_group.default.name}"]  
   user_data = "${file("userdata.sh")}"
 
