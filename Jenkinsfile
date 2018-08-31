@@ -23,7 +23,7 @@ node("master") {
         }
        
         sh "terraform get"
-        sh "set +e; terraform plan -destroy -out=plan.out -var-file=environments/${env.PROJECT}/${env.PROJECT}.tfvars -detailed-exitcode; echo \$? > status"
+        sh "set +e; terraform plan -destroy -out=plan.out -detailed-exitcode; echo \$? > status"
         def exitCode = readFile('status').trim()
         def destroy = false
         echo "Terraform Plan Exit Code: ${exitCode}"
@@ -49,7 +49,7 @@ node("master") {
             if (fileExists("status.destroy")) {
                 sh "rm status.destroy"
             }
-            sh "set +e; terraform destroy -force -var-file=environments/${env.PROJECT}/${env.PROJECT}.tfvars; echo \$? > status.destroy"
+            sh "set +e; terraform destroy -force; echo \$? > status.destroy"
             def destroyExitCode = readFile('status.destroy').trim()
             if (destroyExitCode == "0") {
                 // slackSend channel: '#ci', color: 'good', message: "Changes Applied ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"    
