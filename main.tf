@@ -3,7 +3,7 @@ provider "aws" {
 }
 resource "aws_key_pair" "deployer" {
   key_name   = "deployer-key"
-  public_key = "${file("/home/satheesh/terraform_ec2_key.pub")}"
+  public_key = "${file("terraform_ec2_key.pub")}"
 }
 resource "aws_eip" "default" {
   instance = "${aws_instance.web.id}"
