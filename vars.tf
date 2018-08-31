@@ -1,18 +1,16 @@
-variable "stack_name"{
-	description = "Name of the current Stack"
+variable "aws_region" {
+  description = "The AWS region to create things in."
+  default     = "us-west-2"
 }
+
+# ubuntu-trusty-14.04 (x64)
+variable "aws_amis" {
+  default = {
+   # "us-east-1" = "ami-5f709f34"
+    "us-west-2" = "ami-51537029"
+  }
+}
+
 variable "key_name" {
-	description = "The AWS keypair name to access your EC2 Instances."
-}
-variable "region" {
-	description = "The AWS region."
-}
-variable "server_port" {
-	description = "The Server port to access web page."
-}
-variable "min_size" {
-	description = "Minimum size of the AWS autoscaling group."
-}
-variable "max_size" {
-	description = "Minimum size of the AWS autoscaling group."
+  description = "Name of the SSH keypair to use in AWS."
 }
