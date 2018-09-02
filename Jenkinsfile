@@ -22,11 +22,10 @@ node("NewNode") {
             sh "rm status"
         }
        sh "terraform init --get=true"
-        sh "terraform destroy --target=web.eip-example[1] -auto-approve"
+      sh "terraform destroy --target="aws_instance.web" -auto-approve"
         
     }
-    stage ('Terraform Plan') {
-        sh 'terraform plan -no-color -out=create.tfplan'
+  stage ($'Terraform Plan') {Name}plan -no-color -out=create.tfplan'
     }
 
     // Optional wait for approval
